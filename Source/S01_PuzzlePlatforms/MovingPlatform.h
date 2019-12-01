@@ -16,8 +16,11 @@ class S01_PUZZLEPLATFORMS_API AMovingPlatform : public AStaticMeshActor
 
 private:
 
-	UPROPERTY(EditAnywhere, Category = "Speed")
+	UPROPERTY(EditAnywhere, Category = "Platform")
 	float PlatformSpeed = 50; // cm/s
+
+	UPROPERTY(EditAnywhere, Category = "Platform", meta = (MakeEditWidget = true))
+	FVector TargetLocation;
 
 public:
 

@@ -21,6 +21,8 @@ void AMovingPlatform::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
 	if (HasAuthority()) {
-		SetActorLocation(GetActorLocation() + FVector(PlatformSpeed * DeltaTime, 0, 0)); // Move 5 cm per second
+		FVector GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation);
+		FVector Direction = (GlobalTargetLocation - GetActorLocation()).GetSafeNormal();
+		SetActorLocation(GetActorLocation() + (PlatformSpeed * DeltaTime * Direction)); // Move 5 cm per second in direction
 	}
 }
