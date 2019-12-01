@@ -22,6 +22,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Platform", meta = (MakeEditWidget = true))
 	FVector TargetLocation;
 
+	FVector GlobalStartLocation;
+	FVector GlobalTargetLocation;
+
 public:
 
 	AMovingPlatform();
@@ -29,5 +32,7 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
+
+	void SwaptStartAndTarget();
 	
 };
