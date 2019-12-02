@@ -25,6 +25,9 @@ private:
 	FVector GlobalStartLocation;
 	FVector GlobalTargetLocation;
 
+	UPROPERTY(EditAnywhere, Category = "Trigger")
+	int ActiveTriggers = 1;
+
 public:
 
 	AMovingPlatform();
@@ -34,5 +37,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void SwaptStartAndTarget();
+
+	void AddActiveTrigger();
+
+	void RemoveActiveTrigger();
 	
 };

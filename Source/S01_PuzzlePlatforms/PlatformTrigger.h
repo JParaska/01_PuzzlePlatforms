@@ -15,6 +15,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Trigger")
 	class UBoxComponent* TriggerVolume;
+
+	UPROPERTY(EditAnywhere, Category = "Trigger")
+	TArray<class AMovingPlatform*> PlatformsToTrigger;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -26,5 +29,13 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+private:
+
+	UFUNCTION(BlueprintCallable, Category = "Overlap")
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION(BlueprintCallable, Category = "Overlap")
+	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 };

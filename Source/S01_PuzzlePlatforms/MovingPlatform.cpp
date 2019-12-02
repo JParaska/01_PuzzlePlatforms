@@ -23,7 +23,7 @@ void AMovingPlatform::BeginPlay() {
 void AMovingPlatform::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
-	if (HasAuthority()) {
+	if (HasAuthority() && ActiveTriggers > 0) {
 		FVector Direction = (GlobalTargetLocation - GlobalStartLocation).GetSafeNormal();
 		SetActorLocation(GetActorLocation() + (PlatformSpeed * DeltaTime * Direction));
 		if (GlobalStartLocation.Equals(GetActorLocation(), 5)) {
@@ -39,4 +39,12 @@ void AMovingPlatform::SwaptStartAndTarget() {
 	FVector Temp = GlobalStartLocation;
 	GlobalStartLocation = GlobalTargetLocation;
 	GlobalTargetLocation = Temp;
+}
+
+void AMovingPlatform::AddActiveTrigger() {
+	ActiveTriggers += 1;
+}
+
+void AMovingPlatform::RemoveActiveTrigger() {
+	ActiveTriggers = FMath::Max(0, ActiveTriggers - 1);
 }
