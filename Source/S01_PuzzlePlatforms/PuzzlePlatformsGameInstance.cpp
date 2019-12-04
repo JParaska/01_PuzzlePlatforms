@@ -5,6 +5,7 @@
 
 #include "Engine/Engine.h"
 #include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance() {
 	UE_LOG(LogTemp, Warning, TEXT("Constructor of game instance"));
@@ -28,7 +29,12 @@ void UPuzzlePlatformsGameInstance::Host() {
 
 void UPuzzlePlatformsGameInstance::Join(const FString & Address) {
 	UEngine* Engine = GetEngine();
-	if (!ensure(Engine != nullptr)) return;
+	if (ensure(Engine != nullptr)) {
+		Engine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Joining: %s"), *Address));
+	}
 
-	Engine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Joining: %s"), *Address));
+	APlayerController* PlayerController = GetFirstLocalPlayerController();
+	if (ensure(PlayerController != nullptr)) {
+		PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+	}
 }
