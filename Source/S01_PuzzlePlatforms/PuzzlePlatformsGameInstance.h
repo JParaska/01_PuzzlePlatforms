@@ -14,6 +14,10 @@ class S01_PUZZLEPLATFORMS_API UPuzzlePlatformsGameInstance : public UGameInstanc
 {
 	GENERATED_BODY()
 
+private:
+
+	TSubclassOf<class UUserWidget> MenuClass;
+
 public:
 
 	UPuzzlePlatformsGameInstance();

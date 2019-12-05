@@ -6,13 +6,19 @@
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "UObject/ConstructorHelpers.h"
+#include "PlatformTrigger.h"
+#include "Blueprint/UserWidget.h"
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance() {
-	UE_LOG(LogTemp, Warning, TEXT("Constructor of game instance"));
+	static ConstructorHelpers::FClassFinder<UUserWidget> MenuWidgetClass(TEXT("/Game/MenuSystem/WBP_MainMenu"));
+	if (MenuWidgetClass.Class != nullptr) {
+		MenuClass = MenuWidgetClass.Class;
+	}
 }
 
 void UPuzzlePlatformsGameInstance::Init() {
-	UE_LOG(LogTemp, Warning, TEXT("Init function of game instance"));
+	UE_LOG(LogTemp, Warning, TEXT("Menu class: %s"), *MenuClass->GetName());
 }
 
 void UPuzzlePlatformsGameInstance::Host() {
