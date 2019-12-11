@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "MenuInterface.h"
 #include "MainMenu.generated.h"
 
 class UButton;
@@ -24,10 +25,18 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UButton* JoinButton;
 
+	IMenuInterface* MenuInterface;
+
 /** Methods */
 public:
 
 	virtual bool Initialize();
+
+	void SetMenuInterface(IMenuInterface* Interface);
+
+	void Setup();
+
+	void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
 
 private:
 
