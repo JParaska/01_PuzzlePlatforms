@@ -41,4 +41,7 @@ public:
 
 	UFUNCTION()
 	virtual void LoadMainMenu() override;
+
+	UFUNCTION()
+	virtual void QuitGame() override;
 };

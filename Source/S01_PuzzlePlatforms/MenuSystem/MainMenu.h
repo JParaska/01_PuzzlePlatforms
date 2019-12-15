@@ -45,6 +45,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UButton* JoinServerButton;
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* QuitButton;
+
 /** Methods */
 public:
 
@@ -63,5 +66,8 @@ private:
 
 	UFUNCTION()
 	void JoinServer();
+
+	UFUNCTION()
+	void QuitGame();
 	
 };

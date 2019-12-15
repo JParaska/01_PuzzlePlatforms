@@ -22,6 +22,9 @@ bool UMainMenu::Initialize() {
 
 	if (!ensure(JoinServerButton != nullptr)) return false;
 	JoinServerButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
+
+	if (!ensure(QuitButton != nullptr)) return false;
+	QuitButton->OnClicked.AddDynamic(this, &UMainMenu::QuitGame);
 	
 	return true;
 }
@@ -48,5 +51,11 @@ void UMainMenu::JoinServer() {
 	if (ensure(IPAddressTextBox != nullptr) && ensure(MenuInterface != nullptr)) {
 		auto IPAddress = IPAddressTextBox->GetText();
 		MenuInterface->Join(IPAddress.ToString());
+	}
+}
+
+void UMainMenu::QuitGame() {
+	if (ensure(MenuInterface != nullptr)) {
+		MenuInterface->QuitGame();
 	}
 }

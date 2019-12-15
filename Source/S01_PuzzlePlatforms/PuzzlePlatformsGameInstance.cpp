@@ -77,3 +77,10 @@ void UPuzzlePlatformsGameInstance::LoadMainMenu() {
 		PlayerController->ClientTravel("/Game/ThirdPersonCPP/Maps/MainMenuMap", ETravelType::TRAVEL_Absolute);
 	}
 }
+
+void UPuzzlePlatformsGameInstance::QuitGame() {
+	APlayerController* PlayerController = GetFirstLocalPlayerController();
+	if (ensure(PlayerController != nullptr)) {
+		PlayerController->ConsoleCommand("quit");
+	}
+}
