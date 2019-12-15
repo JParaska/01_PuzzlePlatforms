@@ -17,7 +17,9 @@ class S01_PUZZLEPLATFORMS_API UPuzzlePlatformsGameInstance : public UGameInstanc
 
 private:
 
-	TSubclassOf<class UUserWidget> MenuClass;
+	TSubclassOf<class UUserWidget> MainMenuClass;
+
+	TSubclassOf<class UUserWidget> GameMenuClass;
 
 public:
 
@@ -28,9 +30,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "HUD")
 	void LoadMenu();
 
-	UFUNCTION(Exec)
-	void Host();
+	UFUNCTION(BlueprintCallable, Category = "HUD")
+	void LoadGameMenu();
 
 	UFUNCTION(Exec)
-	void Join(const FString& Address);
+	virtual void Host() override;
+
+	UFUNCTION(Exec)
+	virtual void Join(const FString& Address) override;
+
+	UFUNCTION()
+	virtual void LoadMainMenu() override;
 };
