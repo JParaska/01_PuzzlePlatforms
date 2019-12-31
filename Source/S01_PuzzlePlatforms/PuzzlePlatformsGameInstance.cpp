@@ -10,6 +10,7 @@
 #include "PlatformTrigger.h"
 #include "Blueprint/UserWidget.h"
 #include "MenuSystem/MenuWidget.h"
+#include "OnlineSubsystem.h"
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance() {
 	static ConstructorHelpers::FClassFinder<UUserWidget> MainMenuWidgetClass(TEXT("/Game/MenuSystem/WBP_MainMenu"));
@@ -25,6 +26,13 @@ UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance() {
 
 void UPuzzlePlatformsGameInstance::Init() {
 	UE_LOG(LogTemp, Warning, TEXT("Menu class: %s"), *MainMenuClass->GetName());
+	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get(NAME_None);
+	if (OnlineSubsystem != nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Online sub-system found: %s"), *OnlineSubsystem->GetSubsystemName().ToString());
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("No Online sub-system"));
+	}
 }
 
 void UPuzzlePlatformsGameInstance::LoadMenu() {
