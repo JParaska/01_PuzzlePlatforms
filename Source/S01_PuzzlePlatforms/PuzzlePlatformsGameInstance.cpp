@@ -14,6 +14,8 @@
 #include "Interfaces/OnlineSessionInterface.h"
 #include "OnlineSessionSettings.h"
 
+const static FName SESSION_NAME = TEXT("TestSession");
+
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance() {
 	static ConstructorHelpers::FClassFinder<UUserWidget> MainMenuWidgetClass(TEXT("/Game/MenuSystem/WBP_MainMenu"));
 	if (MainMenuWidgetClass.Class != nullptr) {
@@ -32,6 +34,7 @@ void UPuzzlePlatformsGameInstance::Init() {
 		SessionInterface = Subsystem->GetSessionInterface();
 		if (SessionInterface.IsValid()) {
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnSessionCreatedCompleted);
+			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnSessionDestroyedCompleted);
 		}
 	}
 }
@@ -58,8 +61,25 @@ void UPuzzlePlatformsGameInstance::LoadGameMenu() {
 
 void UPuzzlePlatformsGameInstance::Host() {
 	if (SessionInterface.IsValid()) {
+		auto NamedSession = SessionInterface->GetNamedSession(SESSION_NAME);
+		if (NamedSession != nullptr) {
+			SessionInterface->DestroySession(SESSION_NAME);
+		} else {
+			CreateSession();
+		}
+	}
+}
+
+void UPuzzlePlatformsGameInstance::OnSessionDestroyedCompleted(FName SessionName, bool Destroyed) {
+	if (Destroyed) {
+		CreateSession();
+	}
+}
+
+void UPuzzlePlatformsGameInstance::CreateSession() {
+	if (SessionInterface.IsValid()) {
 		FOnlineSessionSettings SessionSettings;
-		SessionInterface->CreateSession(0, TEXT("Test session"), SessionSettings);
+		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
 	}
 }
 

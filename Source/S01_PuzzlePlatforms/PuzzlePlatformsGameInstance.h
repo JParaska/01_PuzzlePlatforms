@@ -40,6 +40,12 @@ public:
 	virtual void Host() override;
 
 	UFUNCTION()
+	void OnSessionDestroyedCompleted(FName SessionName, bool Destroyed);
+
+	UFUNCTION()
+	void CreateSession();
+
+	UFUNCTION()
 	void OnSessionCreatedCompleted(FName SessionName, bool Created);
 
 	UFUNCTION(Exec)
