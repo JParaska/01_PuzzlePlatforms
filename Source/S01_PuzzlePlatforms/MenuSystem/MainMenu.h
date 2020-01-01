@@ -10,6 +10,7 @@ class UButton;
 class UWidgetSwitcher;
 class UWidget;
 class UEditableTextBox;
+class UPanelWidget;
 
 /**
  * 
@@ -21,6 +22,8 @@ class S01_PUZZLEPLATFORMS_API UMainMenu : public UMenuWidget
 
 /** Properties */
 private:
+	TSubclassOf<class UUserWidget> ServerRowClass;
+
 	UPROPERTY(meta = (BindWidget))
 	UWidgetSwitcher* MenuSwitcher;
 
@@ -40,7 +43,7 @@ private:
 	UButton* CancelJoinMenuButton;
 
 	UPROPERTY(meta = (BindWidget))
-	UEditableTextBox* IPAddressTextBox;
+	UPanelWidget* ServerList;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* JoinServerButton;
@@ -50,6 +53,8 @@ private:
 
 /** Methods */
 public:
+
+	UMainMenu(const FObjectInitializer & ObjectInitializer);
 
 	virtual bool Initialize();
 

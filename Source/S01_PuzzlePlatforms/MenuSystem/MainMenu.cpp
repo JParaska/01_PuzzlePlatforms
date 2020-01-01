@@ -6,6 +6,16 @@
 #include "Components/WidgetSwitcher.h"
 #include "Components/EditableTextBox.h"
 #include "Engine/World.h"
+#include "Blueprint/UserWidget.h"
+#include "UObject/ConstructorHelpers.h"
+#include "ServerRow.h"
+
+UMainMenu::UMainMenu(const FObjectInitializer & ObjectInitializer) {
+	static ConstructorHelpers::FClassFinder<UUserWidget> ServerRowWidgetClass(TEXT("/Game/MenuSystem/WBP_ServerRow"));
+	if (ServerRowWidgetClass.Class != nullptr) {
+		ServerRowClass = ServerRowWidgetClass.Class;
+	}
+}
 
 bool UMainMenu::Initialize() {
 	bool bInitialized = Super::Initialize();
@@ -48,9 +58,18 @@ void UMainMenu::OpenMainMenu() {
 }
 
 void UMainMenu::JoinServer() {
-	if (ensure(IPAddressTextBox != nullptr) && ensure(MenuInterface != nullptr)) {
+	/*if (ensure(IPAddressTextBox != nullptr) && ensure(MenuInterface != nullptr)) {
 		auto IPAddress = IPAddressTextBox->GetText();
 		MenuInterface->Join(IPAddress.ToString());
+	}*/
+	if (ensure(ServerList != nullptr) && ensure(ServerRowClass != nullptr)) {
+		UWorld* World = GetWorld();
+		if (World != nullptr) {
+			UServerRow* ServerRow = CreateWidget<UServerRow>(World, ServerRowClass);
+			if (ServerRow != nullptr) {
+				ServerList->AddChild(ServerRow);
+			}
+		}
 	}
 }
 
