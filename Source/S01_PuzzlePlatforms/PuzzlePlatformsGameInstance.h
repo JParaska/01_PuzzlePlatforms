@@ -24,6 +24,8 @@ private:
 
 	IOnlineSessionPtr SessionInterface;
 
+	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
+
 public:
 
 	UPuzzlePlatformsGameInstance();
@@ -47,6 +49,9 @@ public:
 
 	UFUNCTION()
 	void OnSessionCreatedCompleted(FName SessionName, bool Created);
+
+	UFUNCTION()
+	void OnSessionFindCompleted(bool Success);
 
 	UFUNCTION(Exec)
 	virtual void Join(const FString& Address) override;
