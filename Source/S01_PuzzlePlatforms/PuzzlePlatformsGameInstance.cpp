@@ -11,6 +11,8 @@
 #include "Blueprint/UserWidget.h"
 #include "MenuSystem/MenuWidget.h"
 #include "OnlineSubsystem.h"
+#include "Interfaces/OnlineSessionInterface.h"
+#include "OnlineSessionSettings.h"
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance() {
 	static ConstructorHelpers::FClassFinder<UUserWidget> MainMenuWidgetClass(TEXT("/Game/MenuSystem/WBP_MainMenu"));
@@ -27,14 +29,10 @@ UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance() {
 void UPuzzlePlatformsGameInstance::Init() {
 	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
 	if (Subsystem != nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("Online sub-system found: %s"), *Subsystem->GetSubsystemName().ToString());
-		IOnlineSessionPtr SessionInterface = Subsystem->GetSessionInterface();
+		SessionInterface = Subsystem->GetSessionInterface();
 		if (SessionInterface.IsValid()) {
-			UE_LOG(LogTemp, Warning, TEXT("Online Session interface found"));
+			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnSessionCreatedCompleted);
 		}
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("No Online sub-system"));
 	}
 }
 
@@ -59,14 +57,23 @@ void UPuzzlePlatformsGameInstance::LoadGameMenu() {
 }
 
 void UPuzzlePlatformsGameInstance::Host() {
-	UEngine* Engine = GetEngine();
-	if (ensure(Engine != nullptr)) {
-		Engine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("Hosting"));
+	if (SessionInterface.IsValid()) {
+		FOnlineSessionSettings SessionSettings;
+		SessionInterface->CreateSession(0, TEXT("Test session"), SessionSettings);
 	}
+}
 
-	UWorld* World = GetWorld();
-	if (ensure(World != nullptr)) {
-		World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
+void UPuzzlePlatformsGameInstance::OnSessionCreatedCompleted(FName SessionName, bool Created) {
+	if (Created) {
+		UEngine* Engine = GetEngine();
+		if (ensure(Engine != nullptr)) {
+			Engine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("Hosting"));
+		}
+
+		UWorld* World = GetWorld();
+		if (ensure(World != nullptr)) {
+			World->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
+		}
 	}
 }
 
