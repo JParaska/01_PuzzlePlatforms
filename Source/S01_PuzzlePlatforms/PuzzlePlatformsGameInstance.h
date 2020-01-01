@@ -8,6 +8,8 @@
 #include "OnlineSubsystem.h"
 #include "PuzzlePlatformsGameInstance.generated.h"
 
+class UMainMenu;
+
 /**
  * 
  */
@@ -25,6 +27,8 @@ private:
 	IOnlineSessionPtr SessionInterface;
 
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;
+
+	UMainMenu* MainMenu;
 
 public:
 
@@ -61,4 +65,7 @@ public:
 
 	UFUNCTION()
 	virtual void QuitGame() override;
+
+	UFUNCTION()
+	virtual void GetServerList() override;
 };

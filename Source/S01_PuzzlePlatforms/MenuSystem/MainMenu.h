@@ -58,6 +58,8 @@ public:
 
 	virtual bool Initialize();
 
+	void SetServerList(TArray<FString> ServerNames);
+
 private:
 
 	UFUNCTION()

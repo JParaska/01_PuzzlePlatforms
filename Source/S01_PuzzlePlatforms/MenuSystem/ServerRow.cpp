@@ -2,4 +2,8 @@
 
 
 #include "ServerRow.h"
+#include "Components/TextBlock.h"
 
+void UServerRow::SetServerNameText(FText ServerNameText) {
+	ServerName->SetText(ServerNameText);
+}

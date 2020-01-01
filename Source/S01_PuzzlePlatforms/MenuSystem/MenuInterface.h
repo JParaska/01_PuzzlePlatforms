@@ -30,4 +30,6 @@ public:
 	virtual void LoadMainMenu() = 0;
 
 	virtual void QuitGame() = 0;
+
+	virtual void GetServerList() = 0;
 };
