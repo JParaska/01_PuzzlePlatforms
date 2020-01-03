@@ -7,6 +7,8 @@
 #include "ServerRow.generated.h"
 
 class UTextBlock;
+class UMainMenu;
+class UButton;
 
 /**
  * 
@@ -22,8 +24,23 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* ServerName;
 
+	UPROPERTY(meta = (BindWidget))
+	UButton* RowButton;
+
+	UPROPERTY()
+	UMainMenu* ParentWidget;
+
+	uint32 Index;
+
 /** Functions */
 public:
 
 	void SetServerNameText(FText ServerNameText);
+
+	void Setup(UMainMenu* Parent, uint32 Index);
+
+private:
+
+	UFUNCTION()
+	void OnClicked();
 };

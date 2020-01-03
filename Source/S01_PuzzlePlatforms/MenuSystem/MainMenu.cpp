@@ -45,15 +45,22 @@ void UMainMenu::SetServerList(TArray<FString> ServerNames) {
 		UWorld* World = GetWorld();
 		if (World != nullptr) {
 			ServerList->ClearChildren();
+			uint32 i = 0;
 			for (const auto & ServerName : ServerNames) {
 				UServerRow* ServerRow = CreateWidget<UServerRow>(World, ServerRowClass);
 				if (ServerRow != nullptr) {
 					ServerRow->SetServerNameText(FText::FromString(ServerName));
+					ServerRow->Setup(this, i);
 					ServerList->AddChild(ServerRow);
+					++i;
 				}
 			}
 		}
 	}
+}
+
+void UMainMenu::SelectIndex(uint32 Index) {
+	SelectedIndex = Index;
 }
 
 void UMainMenu::HostServer() {
@@ -66,7 +73,8 @@ void UMainMenu::OpenJoinMenu() {
 	if (ensure(MenuSwitcher != nullptr) && ensure(JoinMenu != nullptr)) {
 		MenuSwitcher->SetActiveWidget(JoinMenu);
 		if (MenuInterface != nullptr) {
-			MenuInterface->GetServerList();
+			//MenuInterface->GetServerList();
+			SetServerList({ "Test1", "Test2" });
 		}
 	}
 }
@@ -78,6 +86,9 @@ void UMainMenu::OpenMainMenu() {
 }
 
 void UMainMenu::JoinServer() {
+	if (SelectedIndex.IsSet()) {
+		UE_LOG(LogTemp, Warning, TEXT("Selected index: %d"), SelectedIndex.GetValue());
+	}
 	/*if (ensure(IPAddressTextBox != nullptr) && ensure(MenuInterface != nullptr)) {
 		auto IPAddress = IPAddressTextBox->GetText();
 		MenuInterface->Join(IPAddress.ToString());

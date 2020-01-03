@@ -51,6 +51,8 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UButton* QuitButton;
 
+	TOptional<uint32> SelectedIndex;
+
 /** Methods */
 public:
 
@@ -59,6 +61,8 @@ public:
 	virtual bool Initialize();
 
 	void SetServerList(TArray<FString> ServerNames);
+
+	void SelectIndex(uint32 Index);
 
 private:
 
