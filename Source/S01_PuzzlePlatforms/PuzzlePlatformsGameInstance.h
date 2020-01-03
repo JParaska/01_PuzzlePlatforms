@@ -6,6 +6,7 @@
 #include "Engine/GameInstance.h"
 #include "MenuSystem/MenuInterface.h"
 #include "OnlineSubsystem.h"
+#include "Interfaces/OnlineSessionInterface.h"
 #include "PuzzlePlatformsGameInstance.generated.h"
 
 class UMainMenu;
@@ -57,8 +58,10 @@ public:
 	UFUNCTION()
 	void OnSessionFindCompleted(bool Success);
 
+	void OnJoinSessionCompleted(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+
 	UFUNCTION(Exec)
-	virtual void Join(const FString& Address) override;
+	virtual void Join(const uint32 SessionIndex) override;
 
 	UFUNCTION()
 	virtual void LoadMainMenu() override;

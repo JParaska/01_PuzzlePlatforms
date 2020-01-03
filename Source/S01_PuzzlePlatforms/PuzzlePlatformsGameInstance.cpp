@@ -11,7 +11,6 @@
 #include "Blueprint/UserWidget.h"
 #include "MenuSystem/MenuWidget.h"
 #include "OnlineSubsystem.h"
-#include "Interfaces/OnlineSessionInterface.h"
 #include "OnlineSessionSettings.h"
 #include "MenuSystem/MainMenu.h"
 
@@ -37,6 +36,7 @@ void UPuzzlePlatformsGameInstance::Init() {
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnSessionCreatedCompleted);
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnSessionDestroyedCompleted);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnSessionFindCompleted);
+			SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnJoinSessionCompleted);
 		}
 	}
 }
@@ -119,15 +119,21 @@ void UPuzzlePlatformsGameInstance::OnSessionFindCompleted(bool Success) {
 	}
 }
 
-void UPuzzlePlatformsGameInstance::Join(const FString & Address) {
-	UEngine* Engine = GetEngine();
-	if (ensure(Engine != nullptr)) {
-		Engine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Joining: %s"), *Address));
+void UPuzzlePlatformsGameInstance::OnJoinSessionCompleted(FName SessionName, EOnJoinSessionCompleteResult::Type Result) {
+	if (SessionInterface.IsValid()) {
+		FString ConnectInfo;
+		if (SessionInterface->GetResolvedConnectString(SessionName, ConnectInfo)) {
+			APlayerController* PlayerController = GetFirstLocalPlayerController();
+			if (PlayerController != nullptr) {
+				PlayerController->ClientTravel(ConnectInfo, ETravelType::TRAVEL_Absolute);
+			}
+		}
 	}
+}
 
-	APlayerController* PlayerController = GetFirstLocalPlayerController();
-	if (ensure(PlayerController != nullptr)) {
-		PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+void UPuzzlePlatformsGameInstance::Join(const uint32 SessionIndex) {
+	if (SessionInterface.IsValid() && SessionSearch.IsValid()) {
+		SessionInterface->JoinSession(0, SESSION_NAME, SessionSearch->SearchResults[SessionIndex]);
 	}
 }
 

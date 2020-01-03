@@ -73,8 +73,7 @@ void UMainMenu::OpenJoinMenu() {
 	if (ensure(MenuSwitcher != nullptr) && ensure(JoinMenu != nullptr)) {
 		MenuSwitcher->SetActiveWidget(JoinMenu);
 		if (MenuInterface != nullptr) {
-			//MenuInterface->GetServerList();
-			SetServerList({ "Test1", "Test2" });
+			MenuInterface->GetServerList();
 		}
 	}
 }
@@ -86,13 +85,12 @@ void UMainMenu::OpenMainMenu() {
 }
 
 void UMainMenu::JoinServer() {
-	if (SelectedIndex.IsSet()) {
-		UE_LOG(LogTemp, Warning, TEXT("Selected index: %d"), SelectedIndex.GetValue());
+	if (SelectedIndex.IsSet() && MenuInterface != nullptr) {
+		MenuInterface->Join(SelectedIndex.GetValue());
 	}
-	/*if (ensure(IPAddressTextBox != nullptr) && ensure(MenuInterface != nullptr)) {
-		auto IPAddress = IPAddressTextBox->GetText();
-		MenuInterface->Join(IPAddress.ToString());
-	}*/
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("No Server selected"));
+	}
 }
 
 void UMainMenu::QuitGame() {
