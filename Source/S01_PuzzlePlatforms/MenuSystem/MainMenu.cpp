@@ -61,6 +61,7 @@ void UMainMenu::SetServerList(TArray<FString> ServerNames) {
 
 void UMainMenu::SelectIndex(uint32 Index) {
 	SelectedIndex = Index;
+	UpdateChild(Index);
 }
 
 void UMainMenu::HostServer() {
@@ -73,7 +74,8 @@ void UMainMenu::OpenJoinMenu() {
 	if (ensure(MenuSwitcher != nullptr) && ensure(JoinMenu != nullptr)) {
 		MenuSwitcher->SetActiveWidget(JoinMenu);
 		if (MenuInterface != nullptr) {
-			MenuInterface->GetServerList();
+			//MenuInterface->GetServerList();
+			SetServerList({ "Test 1", "Test 2", "Test 3" });
 		}
 	}
 }
@@ -96,5 +98,23 @@ void UMainMenu::JoinServer() {
 void UMainMenu::QuitGame() {
 	if (ensure(MenuInterface != nullptr)) {
 		MenuInterface->QuitGame();
+	}
+}
+
+void UMainMenu::UpdateChild(const uint32 Index) {
+	if (ServerList != nullptr) {
+		for (auto Child : ServerList->GetAllChildren()) {
+			UServerRow* Row = Cast<UServerRow>(Child);
+			if (Row != nullptr) {
+				Row->bSelected = false;
+				Row->SetColorAndOpacity(FLinearColor::White);
+			}
+		}
+		auto Child = ServerList->GetChildAt(Index);
+		UServerRow* Row = Cast<UServerRow>(Child);
+		if (Row != nullptr) {
+			Row->bSelected = true;
+			Row->SetColorAndOpacity(FLinearColor::Green);
+		}
 	}
 }

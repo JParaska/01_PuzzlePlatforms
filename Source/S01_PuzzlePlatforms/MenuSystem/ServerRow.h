@@ -32,6 +32,11 @@ private:
 
 	uint32 Index;
 
+public:
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bSelected = false;
+
 /** Functions */
 public:
 

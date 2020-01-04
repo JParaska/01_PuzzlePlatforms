@@ -80,5 +80,7 @@ private:
 
 	UFUNCTION()
 	void QuitGame();
+
+	void UpdateChild(uint32 Index);
 	
 };
