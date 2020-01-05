@@ -31,6 +31,8 @@ private:
 
 	UMainMenu* MainMenu;
 
+	FString ServerName;
+
 public:
 
 	UPuzzlePlatformsGameInstance();
@@ -44,7 +46,7 @@ public:
 	void LoadGameMenu();
 
 	UFUNCTION(Exec)
-	virtual void Host() override;
+	virtual void Host(const FString ServerName) override;
 
 	UFUNCTION()
 	void OnSessionDestroyedCompleted(FName SessionName, bool Destroyed);

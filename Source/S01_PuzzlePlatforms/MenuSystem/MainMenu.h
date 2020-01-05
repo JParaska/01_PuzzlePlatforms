@@ -45,6 +45,9 @@ private:
 	UWidget* MainMenu;
 
 	UPROPERTY(meta = (BindWidget))
+	UWidget* HostMenu;
+
+	UPROPERTY(meta = (BindWidget))
 	UWidget* JoinMenu;
 
 	UPROPERTY(meta = (BindWidget))
@@ -57,13 +60,22 @@ private:
 	UButton* CancelJoinMenuButton;
 
 	UPROPERTY(meta = (BindWidget))
+	UButton* CancelHostMenuButton;
+
+	UPROPERTY(meta = (BindWidget))
 	UPanelWidget* ServerList;
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* JoinServerButton;
 
 	UPROPERTY(meta = (BindWidget))
+	UButton* HostServerButton;
+
+	UPROPERTY(meta = (BindWidget))
 	UButton* QuitButton;
+
+	UPROPERTY(meta = (BindWidget))
+	UEditableTextBox* ServerHostName;
 
 	TOptional<uint32> SelectedIndex;
 
@@ -85,6 +97,9 @@ private:
 
 	UFUNCTION()
 	void OpenJoinMenu();
+
+	UFUNCTION()
+	void OpenHostMenu();
 
 	UFUNCTION()
 	void OpenMainMenu();

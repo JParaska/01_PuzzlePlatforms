@@ -15,6 +15,7 @@
 #include "MenuSystem/MainMenu.h"
 
 const static FName SESSION_NAME = TEXT("TestSession");
+const static FName SERVER_NAME_KEY = TEXT("ServerName");
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance() {
 	static ConstructorHelpers::FClassFinder<UUserWidget> MainMenuWidgetClass(TEXT("/Game/MenuSystem/WBP_MainMenu"));
@@ -61,7 +62,8 @@ void UPuzzlePlatformsGameInstance::LoadGameMenu() {
 	}
 }
 
-void UPuzzlePlatformsGameInstance::Host() {
+void UPuzzlePlatformsGameInstance::Host(const FString ServerName) {
+	this->ServerName = ServerName;
 	if (SessionInterface.IsValid()) {
 		auto NamedSession = SessionInterface->GetNamedSession(SESSION_NAME);
 		if (NamedSession != nullptr) {
@@ -85,6 +87,7 @@ void UPuzzlePlatformsGameInstance::CreateSession() {
 		SessionSettings.bIsLANMatch = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL"; // Set lan match only if testing with NULL OSS
 		SessionSettings.NumPublicConnections = 2;
 		SessionSettings.bShouldAdvertise = true;
+		SessionSettings.Set(SERVER_NAME_KEY, ServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
 	}
 }
@@ -110,10 +113,11 @@ void UPuzzlePlatformsGameInstance::OnSessionFindCompleted(bool Success) {
 		TArray<FServerData> Servers;
 		for (const auto & SearchResult : SessionSearch->SearchResults) {
 			FServerData Data;
-			Data.ServerName = SearchResult.GetSessionIdStr();
 			Data.HostUserName = SearchResult.Session.OwningUserName;
 			Data.MaxPlayers = SearchResult.Session.SessionSettings.NumPublicConnections;
 			Data.CurrentPlayers = Data.MaxPlayers - SearchResult.Session.SessionSettings.NumPublicConnections;
+			FString ServerName;
+			Data.ServerName = SearchResult.Session.SessionSettings.Get(SERVER_NAME_KEY, ServerName) ? ServerName : SearchResult.GetSessionIdStr();
 			Servers.Add(Data);
 		}
 		if (MainMenu != nullptr) {
