@@ -85,7 +85,7 @@ void UPuzzlePlatformsGameInstance::CreateSession() {
 		FOnlineSessionSettings SessionSettings;
 
 		SessionSettings.bIsLANMatch = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL"; // Set lan match only if testing with NULL OSS
-		SessionSettings.NumPublicConnections = 2;
+		SessionSettings.NumPublicConnections = 10;
 		SessionSettings.bShouldAdvertise = true;
 		SessionSettings.Set(SERVER_NAME_KEY, ServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
