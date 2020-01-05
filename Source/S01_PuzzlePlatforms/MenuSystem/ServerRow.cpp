@@ -6,8 +6,16 @@
 #include "MainMenu.h"
 #include "Components/Button.h"
 
-void UServerRow::SetServerNameText(FText ServerNameText) {
+void UServerRow::SetServerNameText(const FText ServerNameText) {
 	ServerName->SetText(ServerNameText);
+}
+
+void UServerRow::SetHostUserNameText(const FText HostUserNameText) {
+	HostUserName->SetText(HostUserNameText);
+}
+
+void UServerRow::SetPlayersNumberText(const uint16 CurrentPlayers, const uint16 MaxPlayers) {
+	Players->SetText(FText::FromString(FString::Printf(TEXT("%d/%d"), CurrentPlayers, MaxPlayers)));
 }
 
 void UServerRow::Setup(UMainMenu * Parent, uint32 Index) {

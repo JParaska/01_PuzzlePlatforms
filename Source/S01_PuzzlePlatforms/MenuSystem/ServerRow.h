@@ -25,6 +25,12 @@ private:
 	UTextBlock* ServerName;
 
 	UPROPERTY(meta = (BindWidget))
+	UTextBlock* HostUserName;
+
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* Players;
+
+	UPROPERTY(meta = (BindWidget))
 	UButton* RowButton;
 
 	UPROPERTY()
@@ -41,6 +47,10 @@ public:
 public:
 
 	void SetServerNameText(FText ServerNameText);
+
+	void SetHostUserNameText(FText HostUserNameText);
+
+	void SetPlayersNumberText(uint16 CurrentPlayers, uint16 MaxPlayers);
 
 	void Setup(UMainMenu* Parent, uint32 Index);
 

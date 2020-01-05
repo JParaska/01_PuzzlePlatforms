@@ -81,7 +81,8 @@ void UPuzzlePlatformsGameInstance::OnSessionDestroyedCompleted(FName SessionName
 void UPuzzlePlatformsGameInstance::CreateSession() {
 	if (SessionInterface.IsValid()) {
 		FOnlineSessionSettings SessionSettings;
-		SessionSettings.bIsLANMatch = true;
+
+		SessionSettings.bIsLANMatch = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL"; // Set lan match only if testing with NULL OSS
 		SessionSettings.NumPublicConnections = 2;
 		SessionSettings.bShouldAdvertise = true;
 		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
@@ -106,12 +107,17 @@ void UPuzzlePlatformsGameInstance::OnSessionFindCompleted(bool Success) {
 	UE_LOG(LogTemp, Warning, TEXT("Finding session finished."));
 	if (Success && SessionSearch.IsValid()) {
 		UE_LOG(LogTemp, Warning, TEXT("Found %i session/s."), SessionSearch->SearchResults.Num());
-		TArray<FString> ServerNames;
+		TArray<FServerData> Servers;
 		for (const auto & SearchResult : SessionSearch->SearchResults) {
-			ServerNames.Add(SearchResult.GetSessionIdStr());
+			FServerData Data;
+			Data.ServerName = SearchResult.GetSessionIdStr();
+			Data.HostUserName = SearchResult.Session.OwningUserName;
+			Data.MaxPlayers = SearchResult.Session.SessionSettings.NumPublicConnections;
+			Data.CurrentPlayers = SearchResult.Session.NumOpenPublicConnections;
+			Servers.Add(Data);
 		}
 		if (MainMenu != nullptr) {
-			MainMenu->SetServerList(ServerNames);
+			MainMenu->SetServerList(Servers);
 		}
 	}
 	else {

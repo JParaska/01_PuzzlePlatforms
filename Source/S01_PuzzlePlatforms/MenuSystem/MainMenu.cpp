@@ -40,16 +40,18 @@ bool UMainMenu::Initialize() {
 	return true;
 }
 
-void UMainMenu::SetServerList(TArray<FString> ServerNames) {
+void UMainMenu::SetServerList(TArray<FServerData> Servers) {
 	if (ensure(ServerList != nullptr) && ensure(ServerRowClass != nullptr)) {
 		UWorld* World = GetWorld();
 		if (World != nullptr) {
 			ServerList->ClearChildren();
 			uint32 i = 0;
-			for (const auto & ServerName : ServerNames) {
+			for (const auto & Server : Servers) {
 				UServerRow* ServerRow = CreateWidget<UServerRow>(World, ServerRowClass);
 				if (ServerRow != nullptr) {
-					ServerRow->SetServerNameText(FText::FromString(ServerName));
+					ServerRow->SetServerNameText(FText::FromString(Server.ServerName));
+					ServerRow->SetHostUserNameText(FText::FromString(Server.HostUserName));
+					ServerRow->SetPlayersNumberText(Server.CurrentPlayers, Server.MaxPlayers);
 					ServerRow->Setup(this, i);
 					ServerList->AddChild(ServerRow);
 					++i;
@@ -74,8 +76,8 @@ void UMainMenu::OpenJoinMenu() {
 	if (ensure(MenuSwitcher != nullptr) && ensure(JoinMenu != nullptr)) {
 		MenuSwitcher->SetActiveWidget(JoinMenu);
 		if (MenuInterface != nullptr) {
-			//MenuInterface->GetServerList();
-			SetServerList({ "Test 1", "Test 2", "Test 3" });
+			MenuInterface->GetServerList();
+			//SetServerList({ "Test 1", "Test 2", "Test 3" });
 		}
 	}
 }

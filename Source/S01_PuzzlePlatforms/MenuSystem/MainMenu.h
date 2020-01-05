@@ -12,6 +12,20 @@ class UWidget;
 class UEditableTextBox;
 class UPanelWidget;
 
+USTRUCT()
+struct FServerData {
+
+	GENERATED_BODY()
+
+	FString ServerName;
+
+	uint16 CurrentPlayers;
+
+	uint16 MaxPlayers;
+
+	FString HostUserName;
+};
+
 /**
  * 
  */
@@ -60,7 +74,7 @@ public:
 
 	virtual bool Initialize();
 
-	void SetServerList(TArray<FString> ServerNames);
+	void SetServerList(TArray<FServerData> Servers);
 
 	void SelectIndex(uint32 Index);
 
