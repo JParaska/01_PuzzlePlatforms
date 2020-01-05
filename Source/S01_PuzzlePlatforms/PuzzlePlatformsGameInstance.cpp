@@ -14,7 +14,7 @@
 #include "OnlineSessionSettings.h"
 #include "MenuSystem/MainMenu.h"
 
-const static FName SESSION_NAME = TEXT("TestSession");
+const static FName SESSION_NAME = NAME_GameSession;
 const static FName SERVER_NAME_KEY = TEXT("ServerName");
 
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance() {
