@@ -171,3 +171,9 @@ void UPuzzlePlatformsGameInstance::GetServerList() {
 		}
 	}
 }
+
+void UPuzzlePlatformsGameInstance::StartSession() {
+	if (SessionInterface.IsValid()) {
+		SessionInterface->StartSession(SESSION_NAME);
+	}
+}

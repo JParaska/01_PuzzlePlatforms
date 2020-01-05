@@ -18,10 +18,17 @@ private:
 
 	uint32 Players = 0;
 
+	UPROPERTY()
+	FTimerHandle StartGameTimer;
+
 /** Methods */
 public:
 
 	virtual void PostLogin(APlayerController * NewPlayer) override;
 
 	virtual void Logout(AController * Exiting) override;
+
+private:
+
+	void StartGame();
 };

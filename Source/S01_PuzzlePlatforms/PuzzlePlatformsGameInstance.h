@@ -73,4 +73,6 @@ public:
 
 	UFUNCTION()
 	virtual void GetServerList() override;
+
+	void StartSession();
 };
